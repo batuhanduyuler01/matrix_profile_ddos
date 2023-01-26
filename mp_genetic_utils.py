@@ -153,6 +153,7 @@ class MatrixProfileManager:
 
 class GeneticAlgo:
     verbosity_level = 0
+    thresholded_mp = False
     def __init__(self, df:pd.DataFrame, max_features:int, population_bag_size:int = 3, fitness = 'MP'):
         print('Genetic Algorithm Process is ready to start')
         self.df = df.copy()
@@ -189,7 +190,11 @@ class GeneticAlgo:
 
     def fitness_function(self, individual:pd.DataFrame):
         mp_manager = MatrixProfileManager(individual, window_size=60, discord_number=1000, method='mpx', measure='mp')
-        cost, f1_score = mp_manager.calculate_cost()
+        if (GeneticAlgo.thresholded_mp == False):
+            cost, f1_score = mp_manager.calculate_cost()
+        elif (GeneticAlgo.thresholded_mp == True):
+            cost, f1_score = mp_manager.calculate_threshold_based_cost()
+            
         if (GeneticAlgo.verbosity_level < 2):
             print(f'processing solution: {individual.columns.to_list()}')
             print(f"f1-score is: {mp_manager.get_f1_score()}")
