@@ -2,6 +2,7 @@ from mp_utils import *
 import pandas as pd
 import random
 from enum import Enum
+import numpy as np
 
 
 class MPMethod(Enum):
